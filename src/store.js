@@ -4,7 +4,9 @@ import Guble from './guble'
 class Store {
   constructor () {
     this.messages = []
-    this.guble = new Guble('ws://127.0.0.1:8080/stream')
+    let url = window.location.href.split("/")
+    let domain_port = url[2].split(":")
+    this.guble = new Guble(`ws://${domain_port[0]}:8080/stream`)
   }
 
   publish (topic, text) {
@@ -14,7 +16,7 @@ class Store {
   connect () {
     this.guble.onMessage((meta, header, body) => {
       console.log("[Store] adding message %", body)
-      self.messages.push(body)
+      this.messages.push(body)
     })
     this.guble.connect('smancke')
     this.guble.onOpen(() => {

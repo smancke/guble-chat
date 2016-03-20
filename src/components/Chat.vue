@@ -1,8 +1,8 @@
 <template>
-  <div id="chat">
+  <div class="chat">
     <timeline></timeline>
-    <div id="write">
-      <input v-model="draft" placeholder="..." @keyup.enter="publish" type="text"/>
+    <div>
+      <textarea class="chat-draft" v-model="draft" placeholder="Type here .." @keyup.enter="publish"></textarea>
     </div>
   </div>
 </template>
@@ -16,6 +16,14 @@ export default {
   components: {
     Timeline
   },
+  methods: {
+    publish: function (event) {
+      if (this.draft.trim() != '') {
+        Store.publish("/foo", this.draft);
+        this.draft = '';
+      }
+    }
+  },
   data () {
     return {
       draft: ''
@@ -27,5 +35,13 @@ export default {
 <style>
 body {
   font-family: Helvetica, sans-serif;
+}
+.chat {
+  max-width: 400px;
+}
+.chat-draft {
+  width: 100%;
+  padding: 10px 0px 10px 10px;
+  box-sizing: border-box;
 }
 </style>
